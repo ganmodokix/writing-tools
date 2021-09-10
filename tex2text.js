@@ -37,10 +37,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
     textareaIn.addEventListener("keyup", () => {
 
-        const rawTeX = textareaIn.value;
-        const convertedText = convert(rawTeX);
+        window.requestAnimationFrame(() => {
 
-        textareaOut.value = convertedText;
+            const rawTeX = textareaIn.value;
+            const convertedText = convert(rawTeX);
+
+            textareaOut.value = convertedText;
+
+        });
 
     });
 
