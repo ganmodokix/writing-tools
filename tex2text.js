@@ -14,13 +14,16 @@ function convert(text) {
         // remove a comment at the ending of the line
         line = line.replace(/\s*%.*$/, "");
 
+        // replace spaces
+        line = line.replace(/~/g, " ");
+
         // replace citations with dummy one
         // e.g. the previous studies~\cite{Foobars1919}. -> the previous studies [42]
-        line = line.replace(/~?\\cite{.*?}/g, "[42]");
+        line = line.replace(/\\cite{.*?}/g, "[42]");
 
         // replace references with dummy one
         // e.g. Just look at Fig.~\ref{fig:hoge}. -> Just look at Fig. 42.
-        line = line.replace(/~?\\ref{.*?}/g, "42");
+        line = line.replace(/\\ref{.*?}/g, "42");
 
         converted_lines.push(line);
 
