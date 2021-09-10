@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter</title>
+    <script>
+        
+        function wordCount(str) {
+            const lines = str.split(/\r?\n/g).map(l => l.replace(/%.*/, "").replace(/^\s+|\s+$/g, ""));
+            const words = lines.map(l => l.split(/\s+/g).filter(w => !!w)).flat();
+            // console.log(words);
+            return words.length;
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+
+            const resultElement = document.getElementById("result");
+            const inputElement  = document.getElementById("input");
+
+            let cache = "";
+            const isChanged = () => {
+                const text = inputElement.value || "";
+                if (text == cache) {
+                    return false;
+                } else {
+                    cache = text;
+                    return true;
+                }
+            };
+
+            const watch = () => {
+                if (isChanged()) {
+                    const text = inputElement.value || "";
+                    const result = wordCount(text);
+                    resultElement.textContent = "" + result;
+                }
+                requestAnimationFrame(watch);
+            };
+            requestAnimationFrame(watch);
+            
+        }, {once: true});
+
+    </script>
+</head>
+<body>
+    <h1>Word counter</h1>
+    <p>This paragraph contains <span id="result"></span> words.</p>
+    <textarea id="input" cols="80" rows="16" placeholder="TeX source here"></textarea>
+</body>
+</html>

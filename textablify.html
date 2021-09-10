@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter</title>
+    <script>
+        
+        function process(str) {
+            return str.replace(/,/g, " & ").replace(/\n/g, " \\\\\n");
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+
+            const resultElement = document.getElementById("result");
+            const inputElement  = document.getElementById("input");
+
+            let cache = "";
+            const isChanged = () => {
+                const text = inputElement.value || "";
+                if (text == cache) {
+                    return false;
+                } else {
+                    cache = text;
+                    return true;
+                }
+            };
+
+            const watch = () => {
+                if (isChanged()) {
+                    const text = inputElement.value || "";
+                    const result = process(text);
+                    resultElement.value = "" + result;
+                }
+                requestAnimationFrame(watch);
+            };
+            requestAnimationFrame(watch);
+            
+        }, {once: true});
+
+    </script>
+</head>
+<body>
+    <h1>TextTablify</h1>
+    <textarea id="input" cols="80" rows="16" placeholder="CSV here"></textarea><br>
+    <textarea id="result" cols="80" rows="16" placeholder="TeX source here"></textarea>
+</body>
+</html>
