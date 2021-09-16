@@ -35,6 +35,7 @@ function convert(text) {
         line = line.replace(/\$\\gamma\$/g, "γ");
         line = line.replace(/\$\\delta\$/g, "δ");
         line = line.replace(/\$\\epsilon\$/g, "ε");
+        line = line.replace(/``|''/g, "\"");
 
         converted_lines.push(line);
 
