@@ -30,11 +30,11 @@ function convert(text) {
         line = line.replace(/\\etal/g, "et al.");
         line = line.replace(/\\ie/g, "i.e.");
         line = line.replace(/\\eg/g, "e.g.");
-        line = line.replace(/\$\\alpha\$, "α"/);
-        line = line.replace(/\$\\beta\$, "β"/);
-        line = line.replace(/\$\\gamma\$, "γ"/);
-        line = line.replace(/\$\\delta\$, "δ"/);
-        line = line.replace(/\$\\epsilon\$, "ε"/);
+        line = line.replace(/\$\\alpha\$/g, "α");
+        line = line.replace(/\$\\beta\$/g, "β");
+        line = line.replace(/\$\\gamma\$/g, "γ");
+        line = line.replace(/\$\\delta\$/g, "δ");
+        line = line.replace(/\$\\epsilon\$/g, "ε");
 
         converted_lines.push(line);
 
