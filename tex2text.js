@@ -33,6 +33,8 @@ function convert(text) {
         line = line.replace(/\$\\alpha\$, "α"/);
         line = line.replace(/\$\\beta\$, "β"/);
         line = line.replace(/\$\\gamma\$, "γ"/);
+        line = line.replace(/\$\\delta\$, "δ"/);
+        line = line.replace(/\$\\epsilon\$, "ε"/);
 
         converted_lines.push(line);
 
