@@ -45,6 +45,9 @@ function convert(text) {
         line = line.replace(/\$\\epsilon\$/g, "ε");
         line = line.replace(/``|''/g, "\"");
 
+        // remove maths
+        line = line.replace(/\$.*?\$/g, "[Math]");
+
         converted_lines.push(line);
 
     }
