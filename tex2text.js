@@ -44,6 +44,7 @@ function convert(text) {
         line = line.replace(/\$\\delta\$/g, "δ");
         line = line.replace(/\$\\epsilon\$/g, "ε");
         line = line.replace(/``|''/g, "\"");
+        line = line.replace(/\\label{.*?}/g, "");
 
         // remove maths
         line = line.replace(/\$.*?\$/g, "[Math]");
@@ -52,9 +53,14 @@ function convert(text) {
 
     }
 
-    const raw_results = converted_lines.join("\n");
+    const raw_result = converted_lines.join("\n");
 
-    return raw_results.replace(/\n{3,}/g, "\n\n");
+    let result = raw_result;
+
+    result = result.replace(/\\begin{(.*?)}[^]*?\\end{\1}/g, "\n\n");
+    result = result.replace(/\n{3,}/g, "\n\n");
+
+    return result;
 
 }
 
