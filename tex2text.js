@@ -31,7 +31,7 @@ function convert(text) {
         line = line.replace(/\\subsubsection{(.*?)}/g, (match, p1, offset, string) => { return `42.1.1 ${p1}`; });
 
         // remove newcommands
-        line = line.replace(/\\newcommand{.*?}({.*?})?{.*?}/g, "");
+        line = line.replace(/\\newcommand{.*}/g, "");
 
         // miscellaneous
         line = line.replace(/\\text(it|bm){(.*?)}/g, "$2");
@@ -49,7 +49,9 @@ function convert(text) {
 
     }
 
-    return converted_lines.join("\n");
+    const raw_results = converted_lines.join("\n");
+
+    return raw_results.replace(/\n{3,}/g, "\n\n");
 
 }
 
