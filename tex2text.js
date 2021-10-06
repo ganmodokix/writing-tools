@@ -25,6 +25,11 @@ function convert(text) {
         // e.g. Just look at Fig.~\ref{fig:hoge}. -> Just look at Fig. 42.
         line = line.replace(/\\ref{.*?}/g, "42");
 
+        // sections
+        line = line.replace(/\\section{(.*?)}/g, (match, p1, offset, string) => { return `42. ${p1}`; });
+        line = line.replace(/\\subsection{(.*?)}/g, (match, p1, offset, string) => { return `42.1 ${p1}`; });
+        line = line.replace(/\\subsubsection{(.*?)}/g, (match, p1, offset, string) => { return `42.1.1 ${p1}`; });
+
         // miscellaneous
         line = line.replace(/\\text(it|bm){(.*?)}/g, "$2");
         line = line.replace(/\\etal/g, "et al.");
