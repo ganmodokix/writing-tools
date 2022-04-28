@@ -35,9 +35,11 @@ function convert(text) {
 
         // miscellaneous
         line = line.replace(/\\text(it|bm){(.*?)}/g, "$2");
+        line = line.replace(/\\emph{(.*?)}/g, "$1");
         line = line.replace(/\\etal/g, "et al.");
         line = line.replace(/\\ie/g, "i.e.");
         line = line.replace(/\\eg/g, "e.g.");
+        line = line.replace(/\\etc/g, "etc.");
         line = line.replace(/\$\\alpha\$/g, "α");
         line = line.replace(/\$\\beta\$/g, "β");
         line = line.replace(/\$\\gamma\$/g, "γ");
@@ -45,6 +47,7 @@ function convert(text) {
         line = line.replace(/\$\\epsilon\$/g, "ε");
         line = line.replace(/``|''/g, "\"");
         line = line.replace(/\\label{.*?}/g, "");
+        line = line.replace(/\\editedpart{(.*?)}/g, "$1");
 
         // remove maths
         line = line.replace(/\$.*?\$/g, "[Math]");
