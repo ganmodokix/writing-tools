@@ -23,6 +23,10 @@ function convert(text) {
 
         // replace references with dummy one
         // e.g. Just look at Fig.~\ref{fig:hoge}. -> Just look at Fig. 42.
+        line = line.replace(/\\cref{fig:.*?}/g, "Fig. [42]");
+        line = line.replace(/\\cref{tab:.*?}/g, "Table 42");
+        line = line.replace(/\\cref{sec:.*?}/g, "Section 42");
+        line = line.replace(/\\cref{eq:.*?}/g, "Eq. (42)");
         line = line.replace(/\\ref{.*?}/g, "42");
 
         // sections
@@ -34,7 +38,7 @@ function convert(text) {
         line = line.replace(/\\newcommand{.*}/g, "");
 
         // miscellaneous
-        line = line.replace(/\\text(it|bm){(.*?)}/g, "$2");
+        line = line.replace(/\\text(it|bf){(.*?)}/g, "$2");
         line = line.replace(/\\emph{(.*?)}/g, "$1");
         line = line.replace(/\\etal/g, "et al.");
         line = line.replace(/\\ie/g, "i.e.");
@@ -51,6 +55,9 @@ function convert(text) {
 
         // remove maths
         line = line.replace(/\$.*?\$/g, "[Math]");
+
+        // remove indents
+        line = line.replace(/^\s+/, "");
 
         converted_lines.push(line);
 
