@@ -1,4 +1,4 @@
-function convert(text) {
+function convert(text, singleLine) {
 
     const text_lines = text.split(/\r?\n/g);
 
@@ -64,7 +64,7 @@ function convert(text) {
 
     }
 
-    const raw_result = converted_lines.join("\n");
+    const raw_result = converted_lines.join(singleLine ? " " : "\n");
 
     let result = raw_result;
 
@@ -85,7 +85,8 @@ window.addEventListener("DOMContentLoaded", () => {
         window.requestAnimationFrame(() => {
 
             const rawTeX = textareaIn.value;
-            const convertedText = convert(rawTeX);
+            const singleLine = document.querySelector("singleLine").value;
+            const convertedText = convert(rawTeX, !!singleLine);
 
             textareaOut.value = convertedText;
 
