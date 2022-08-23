@@ -52,6 +52,7 @@ function convert(text) {
         line = line.replace(/``|''/g, "\"");
         line = line.replace(/\\label{.*?}/g, "");
         line = line.replace(/\\editedpart{(.*?)}/g, "$1");
+        line = line.replace(/\\@/g, "");
 
         // remove maths
         line = line.replace(/\$.*?\$/g, "[Math]");
