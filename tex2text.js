@@ -85,7 +85,7 @@ window.addEventListener("DOMContentLoaded", () => {
         window.requestAnimationFrame(() => {
 
             const rawTeX = textareaIn.value;
-            const singleLine = document.querySelector("singleLine").value;
+            const singleLine = document.querySelector("#singleLine").value;
             const convertedText = convert(rawTeX, !!singleLine);
 
             textareaOut.value = convertedText;
