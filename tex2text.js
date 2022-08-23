@@ -23,7 +23,7 @@ function convert(text) {
 
         // replace references with dummy one
         // e.g. Just look at Fig.~\ref{fig:hoge}. -> Just look at Fig. 42.
-        line = line.replace(/\\cref{fig:.*?}/g, "Fig. [42]");
+        line = line.replace(/\\cref\{fig:.*?\}/g, "Fig. 42");
         line = line.replace(/\\cref{tab:.*?}/g, "Table 42");
         line = line.replace(/\\cref{sec:.*?}/g, "Section 42");
         line = line.replace(/\\cref{eq:.*?}/g, "Eq. (42)");
