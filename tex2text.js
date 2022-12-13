@@ -53,6 +53,9 @@ function convert(text, singleLine) {
         line = line.replace(/\\label{.*?}/g, "");
         line = line.replace(/\\editedpart{(.*?)}/g, "$1");
         line = line.replace(/\\@/g, "");
+        line = line.replace(/\\[gG]ls{(.*?)}/g, (matched, term) => term.toUpperCase());
+        line = line.replace(/\\[gG]lspl{(.*?)}/g, (matched, term) => term.toUpperCase());
+        line = line.replace(/\\newacronym{.*?}{.*?}{.*?}/g, "");
 
         // remove maths
         line = line.replace(/\$.*?\$/g, "[Math]");
@@ -77,21 +80,29 @@ function convert(text, singleLine) {
 
 window.addEventListener("DOMContentLoaded", () => {
 
+    /** @type {HTMLTextAreaElement} */
     const textareaIn = document.querySelector("textarea#in");
+    /** @type {HTMLTextAreaElement} */
     const textareaOut = document.querySelector("textarea#out");
+    
+    /** @type {HTMLInputElement} */
+    const checkSingleLine = document.querySelector("#singleLine")
 
-    textareaIn.addEventListener("keyup", () => {
+    function requestUpdate() {
 
         window.requestAnimationFrame(() => {
 
             const rawTeX = textareaIn.value;
-            const singleLine = document.querySelector("#singleLine").checked;
+            const singleLine = checkSingleLine.checked;
             const convertedText = convert(rawTeX, !!singleLine);
 
             textareaOut.value = convertedText;
 
         });
 
-    });
+    }
+
+    checkSingleLine.addEventListener("change", requestUpdate);
+    textareaIn.addEventListener("keyup", requestUpdate);
 
 }, {once: true})
