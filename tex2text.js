@@ -54,7 +54,7 @@ function convert(text, singleLine) {
         line = line.replace(/\\editedpart{(.*?)}/g, "$1");
         line = line.replace(/\\@/g, "");
         line = line.replace(/\\[gG]ls{(.*?)}/g, (matched, term) => term.toUpperCase());
-        line = line.replace(/\\[gG]lspl{(.*?)}/g, (matched, term) => term.toUpperCase());
+        line = line.replace(/\\[gG]lspl{(.*?)}/g, (matched, term) => term.toUpperCase() + "s");
         line = line.replace(/\\newacronym{.*?}{.*?}{.*?}/g, "");
 
         // remove maths
