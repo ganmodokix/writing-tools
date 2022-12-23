@@ -1,15 +1,12 @@
 function convert(text, singleLine) {
 
-    const text_lines = text.split(/\r?\n/g);
+    const textLines = text.split(/\r?\n/g);
 
-    const converted_lines = [];
+    const convertedLines = [];
 
-    for (let line of text_lines) {
+    let skippingLines = 0;
 
-        // remove lines without anything but comments
-        if (line.match(/^\s*%.*/)) {
-            continue;
-        }
+    for (let line of textLines) {
 
         // remove a comment at the ending of the line
         line = line.replace(/\s*%.*$/, "");
@@ -30,9 +27,9 @@ function convert(text, singleLine) {
         line = line.replace(/\\ref{.*?}/g, "42");
 
         // sections
-        line = line.replace(/\\section{(.*?)}/g, (match, p1, offset, string) => { return `42. ${p1}`; });
-        line = line.replace(/\\subsection{(.*?)}/g, (match, p1, offset, string) => { return `42.1 ${p1}`; });
-        line = line.replace(/\\subsubsection{(.*?)}/g, (match, p1, offset, string) => { return `42.1.1 ${p1}`; });
+        line = line.replace(/\\section{(.*?)}/g, (match, p1, offset, string) => { skippingLines = 2; return `42. ${p1}`; });
+        line = line.replace(/\\subsection{(.*?)}/g, (match, p1, offset, string) => { skippingLines = 2; return `42.1 ${p1}`; });
+        line = line.replace(/\\subsubsection{(.*?)}/g, (match, p1, offset, string) => { skippingLines = 2; return `42.1.1 ${p1}`; });
 
         // remove newcommands
         line = line.replace(/\\newcommand{.*}/g, "");
@@ -56,6 +53,8 @@ function convert(text, singleLine) {
         line = line.replace(/\\[gG]ls{(.*?)}/g, (matched, term) => term.toUpperCase());
         line = line.replace(/\\[gG]lspl{(.*?)}/g, (matched, term) => term.toUpperCase() + "s");
         line = line.replace(/\\newacronym{.*?}{.*?}{.*?}/g, "");
+        line = line.replace(/\\item/g, "");
+        line = line.replace(/\\(begin|end)\{[^}]*?\}/g, "");
 
         // remove maths
         line = line.replace(/\$.*?\$/g, "[Math]");
@@ -63,15 +62,28 @@ function convert(text, singleLine) {
         // remove indents
         line = line.replace(/^\s+/, "");
 
-        converted_lines.push(line);
+        // remove lines without anything but comments
+        if (line.match(/^\s*$/)) {
+            skippingLines++;
+            continue;
+        }
+
+        if (singleLine) {
+            line += skippingLines >= 2 ? "\n" : " ";
+        } else {
+            line += "\n";
+        }
+
+        convertedLines.push(line);
+        skippingLines = 0;
 
     }
 
-    const raw_result = converted_lines.join(singleLine ? " " : "\n");
+    const raw_result = convertedLines.join("");
 
     let result = raw_result;
 
-    result = result.replace(/\\begin{(.*?)}[^]*?\\end{\1}/g, "\n\n");
+    // result = result.replace(/\\begin{(.*?)}[^]*?\\end{\1}/g, "\n\n");
     result = result.replace(/\n{3,}/g, "\n\n");
 
     return result;
