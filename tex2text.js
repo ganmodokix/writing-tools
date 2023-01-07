@@ -1,6 +1,6 @@
 function convert(text, singleLine) {
 
-    const cleanedText = text.replace(/\\begin\{(table|figure)\}[^]*?\\end\{\1\}/g, "");
+    const cleanedText = text.replace(/\\begin\{(table\*?|figure\*?)\}[^]*?\\end\{\1\}/g, "");
 
     const textLines = cleanedText.split(/\r?\n/g);
 
