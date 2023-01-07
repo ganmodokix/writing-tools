@@ -1,12 +1,20 @@
 function convert(text, singleLine) {
 
-    const textLines = text.split(/\r?\n/g);
+    const cleanedText = text.replace(/\\begin\{(table|figure)\}[^]*?\\end\{\1\}/g, "");
+
+    const textLines = cleanedText.split(/\r?\n/g);
 
     const convertedLines = [];
 
     let skippingLines = 0;
 
     for (let line of textLines) {
+
+        if (line.match(/^\s*%.*?$/)) {
+            continue;
+        }
+
+        let bulletItem = false;
 
         // remove a comment at the ending of the line
         line = line.replace(/\s*%.*$/, "");
@@ -53,7 +61,7 @@ function convert(text, singleLine) {
         line = line.replace(/\\[gG]ls{(.*?)}/g, (matched, term) => term.toUpperCase());
         line = line.replace(/\\[gG]lspl{(.*?)}/g, (matched, term) => term.toUpperCase() + "s");
         line = line.replace(/\\newacronym{.*?}{.*?}{.*?}/g, "");
-        line = line.replace(/\\item/g, "");
+        line = line.replace(/\\item/g, () => { bulletItem = true; return "-"; });
         line = line.replace(/\\(begin|end)\{[^}]*?\}/g, "");
 
         // remove maths
@@ -68,12 +76,13 @@ function convert(text, singleLine) {
             continue;
         }
 
-        if (singleLine) {
-            line += skippingLines >= 2 ? "\n" : " ";
+        if (bulletItem) {
+            convertedLines.push("\n");
+        } else if (singleLine) {
+            convertedLines.push(skippingLines >= 2 ? "\n\n" : " ");
         } else {
-            line += "\n";
+            convertedLines.push("\n");
         }
-
         convertedLines.push(line);
         skippingLines = 0;
 
@@ -82,8 +91,6 @@ function convert(text, singleLine) {
     const raw_result = convertedLines.join("");
 
     let result = raw_result;
-
-    // result = result.replace(/\\begin{(.*?)}[^]*?\\end{\1}/g, "\n\n");
     result = result.replace(/\n{3,}/g, "\n\n");
 
     return result;
